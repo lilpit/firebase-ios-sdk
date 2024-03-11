@@ -21,12 +21,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** @typedef FIRRetrieveUserCallback
-    @brief The type of block that is invoked when the construction of a user succeeds or fails.
-    @param user The user that was constructed, or nil if user construction failed.
-    @param error The error which occurred, or nil if the request was successful.
- */
-typedef void (^FIRRetrieveUserCallback)(FIRUser *_Nullable user, NSError *_Nullable error);
 
 /** @typedef FIRVerifyBeforeUpdateEmailCallback
     @brief The type of block called when a request to verify before update email has finished.
@@ -58,24 +52,6 @@ typedef void (^FIRVerifyBeforeUpdateEmailCallback)(NSError *_Nullable error);
     @brief The expiration date of the cached access token.
  */
 @property(nonatomic, copy, readonly) NSDate *accessTokenExpirationDate;
-
-/** @fn retrieveUserWithAuth:accessToken:accessTokenExpirationDate:refreshToken:callback:
-    @brief Constructs a user with Secure Token Service tokens, and obtains user details from the
-        getAccountInfo endpoint.
-    @param auth The associated FIRAuth instance.
-    @param accessToken The Secure Token Service access token.
-    @param accessTokenExpirationDate The approximate expiration date of the access token.
-    @param refreshToken The Secure Token Service refresh token.
-    @param anonymous Whether or not the user is anonymous.
-    @param callback A block which is invoked when the construction succeeds or fails. Invoked
-        asynchronously on the auth global work queue in the future.
- */
-+ (void)retrieveUserWithAuth:(FIRAuth *)auth
-                  accessToken:(nullable NSString *)accessToken
-    accessTokenExpirationDate:(nullable NSDate *)accessTokenExpirationDate
-                 refreshToken:(nullable NSString *)refreshToken
-                    anonymous:(BOOL)anonymous
-                     callback:(FIRRetrieveUserCallback)callback;
 
 /** @fn internalGetTokenForcingRefresh:callback:
     @brief Retrieves the Firebase authentication token, possibly refreshing it if it has expired.

@@ -73,6 +73,14 @@ typedef void (^FIRUserProfileChangeCallback)(NSError *_Nullable error)
 typedef void (^FIRSendEmailVerificationCallback)(NSError *_Nullable error)
     NS_SWIFT_UNAVAILABLE("Use Swift's closure syntax instead.");
 
+
+/** @typedef FIRRetrieveUserCallback
+    @brief The type of block that is invoked when the construction of a user succeeds or fails.
+    @param user The user that was constructed, or nil if user construction failed.
+    @param error The error which occurred, or nil if the request was successful.
+ */
+typedef void (^FIRRetrieveUserCallback)(FIRUser *_Nullable user, NSError *_Nullable error);
+
 /** @class FIRUser
     @brief Represents a user. Firebase Auth does not attempt to validate users
         when loading them from the keychain. Invalidated users (such as those
@@ -129,6 +137,25 @@ NS_SWIFT_NAME(User)
         in or out, use the methods on `Auth`.
  */
 - (instancetype)init NS_UNAVAILABLE;
+
+
+/** @fn retrieveUserWithAuth:accessToken:accessTokenExpirationDate:refreshToken:callback:
+    @brief Constructs a user with Secure Token Service tokens, and obtains user details from the
+        getAccountInfo endpoint.
+    @param auth The associated FIRAuth instance.
+    @param accessToken The Secure Token Service access token.
+    @param accessTokenExpirationDate The approximate expiration date of the access token.
+    @param refreshToken The Secure Token Service refresh token.
+    @param anonymous Whether or not the user is anonymous.
+    @param callback A block which is invoked when the construction succeeds or fails. Invoked
+        asynchronously on the auth global work queue in the future.
+ */
++ (void)retrieveUserWithAuth:(FIRAuth *)auth
+                  accessToken:(nullable NSString *)accessToken
+    accessTokenExpirationDate:(nullable NSDate *)accessTokenExpirationDate
+                 refreshToken:(nullable NSString *)refreshToken
+                    anonymous:(BOOL)anonymous
+                     callback:(FIRRetrieveUserCallback)callback;
 
 /** @fn updateEmail:completion:
     @brief [Deprecated] Updates the email address for the user. On success, the cached user profile
